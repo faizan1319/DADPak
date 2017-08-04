@@ -5,7 +5,7 @@ var mysql = require('mysql');
 //   host            : 'localhost',
 //   user            : 'root',
 //   password        : '',
-//   database        : 'dod'
+//   database        : 'a701xr7ranlad92f'
 // });
 
 
@@ -16,5 +16,7 @@ var pool  = mysql.createPool({
   password        : 'imb4p0bzzf8ek5ho',
   database        : 'a701xr7ranlad92f'
 });
+
+// console.log(pool);
 
 module.exports = pool;
