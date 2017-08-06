@@ -22,6 +22,42 @@ router.get('/login/:user/', function(req, res) {
 	});
 });
 
+router.get('/checkDuplicateUsername/:username', function(req, res) {
+	pool.getConnection(function(err, connection) {
+		var username = req.params.username;
+		var sql = 'SELECT user_id FROM user WHERE username = ?';
+		var inserts = [username];
+		sql = mysql.format(sql, inserts);
+
+		connection.query(sql, function(error, results) {
+			connection.release();
+			if (error) throw error;
+			else {
+				if(results.length === 0) res.json(false);
+				else res.json(true);
+			}
+		})
+	})
+})
+
+router.get('/checkForEmailAlreadyExist/:email', function(req, res) {
+	pool.getConnection(function(err, connection) {
+		var email = req.params.email;
+		var sql = 'SELECT user_id FROM user WHERE email = ?';
+		var inserts = [email];
+		sql = mysql.format(sql, inserts);
+
+		connection.query(sql, function(error, results) {
+			connection.release();
+			if (error) throw error;
+			else {
+				if(results.length === 0) res.json(false);
+				else res.json(true);
+			}
+		})
+	})
+})
+
 router.post('/signup',function(req, res){
 	pool.getConnection(function(err, connection){
 		var firstname = req.body.firstname;
@@ -36,11 +72,16 @@ router.post('/signup',function(req, res){
 
 		connection.query(sql, function(error, results){
 			connection.release();
-			res.json(results);
 			if(error) throw error;
+			else {
+				results.message = 'You have successfully joined the DAD community! Login and show whats happening around or see what others have to show.';
+				res.json(results);
+			}
 		})
 	})
 })
+
+
 
 module.exports = router;
 
