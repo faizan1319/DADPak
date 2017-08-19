@@ -13,7 +13,7 @@ router.post('/postImages', function(req, res) {
 		let imageFile = req.files.image;
 
 		// Use the mv() method to place the file somewhere on your server 
-		imageFile.mv('/images/post/abc.jpg', function(err) {
+		imageFile.mv('../public/images/postImages/abc.jpg', function(err) {
 			if (err)
 			return res.status(500).send(err);
 			res.send('File uploaded!');
