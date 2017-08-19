@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fileUpload = require('express-fileupload');
 var cors = require('cors');
 
 var index = require('./routes/index');
@@ -14,6 +15,7 @@ var mediaUpload = require ('./routes/mediaUpload');
 
 
 var app = express();
+app.use(fileUpload());
 
 //enabling cors
 var corsOption = {
