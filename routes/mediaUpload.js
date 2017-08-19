@@ -6,7 +6,8 @@ var pool = require('./dbconnection');
 
 router.post('/postImages', function(req, res) {
 	pool.getConnection(function(err, connection) {
-		console.log(req);
+		console.log('files are here: ', req.files);
+		console.log('body is here: ', req.body);
 		if (!req.files)
 			return res.status(400).send('No files were uploaded.');
 
@@ -14,7 +15,7 @@ router.post('/postImages', function(req, res) {
 		let imageFile = req.files.image;
 
 		// Use the mv() method to place the file somewhere on your server 
-		imageFile.mv('__dirname/public/images/postImages/abc.jpg', function(err) {
+		imageFile.mv(__dirname/public/images/postImages/abc.jpg, function(err) {
 			if (err)
 			return res.status(500).send(err);
 			res.send('File uploaded!');
