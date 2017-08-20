@@ -11,7 +11,9 @@ var pool = require('./dbconnection');
 router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 
-		console.log(req);
+		var body = req.body;
+		var file = req.file;
+		console.log(body);
 		// console.log('han bhai req.file: ',req.file);
 		// console.log('han bhai req.body: ',req.body);
 		res.json('kiya khayal hai');
