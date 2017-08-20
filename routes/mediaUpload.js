@@ -3,7 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var multer = require('multer');
 
-var storagePath = __dirname+'/public/images/postImages/';
+var storagePath = '/app/public/images/postImages/';
 var upload = multer({dest: storagePath})
 
 var pool = require('./dbconnection');
@@ -13,7 +13,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 
 		var body = req.body;
 		var file = req.file;
-		console.log(body);
+		console.log(file);
 		// console.log('han bhai req.file: ',req.file);
 		// console.log('han bhai req.body: ',req.body);
 		res.json([body, file]);
