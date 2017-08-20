@@ -16,7 +16,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 		console.log(body);
 		// console.log('han bhai req.file: ',req.file);
 		// console.log('han bhai req.body: ',req.body);
-		res.json('kiya khayal hai');
+		res.json([body, file]);
 		// var sql = "INSERT INTO posts (post_title, post_desc, post_lat, post_lng, user_id) VALUES (?, ?, ?, ?, ?)";
 		// var inserts = [req.body.postTitle, req.body.postDesc, req.body.postLat, req.body.postLng, req.body.userId];
 		// sql = mysql.format(sql, inserts);
