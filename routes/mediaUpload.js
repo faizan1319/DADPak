@@ -1,27 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var multer = require('multer');
+
+var uploads = multer({dest:'uploads/postImages/'})
 
 var pool = require('./dbconnection');
 
-router.post('/postImages', function(req, res) {
+router.post('/postImages', uploads.single('abc'), function(req, res) {
 	pool.getConnection(function(err, connection) {
-		console.log('files are here: ', req.files);
-		console.log('body is here: ', req.body);
-		if (!req.files)
-			return res.status(400).send('No files were uploaded.');
 
-		// The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file 
-		let imageFile = req.files.image;
-		var path = __dirname+'/public/images/postImages/abc.jpg';
-		// Use the mv() method to place the file somewhere on your server 
-		imageFile.mv(path, function(err) {
-			if (err)
-			return res.status(500).send(err);
-			res.send('File uploaded!');
-		})
-
-		// console.log(req.files);
+		console.log(req.file);
+		console.log(req.body);
+		res.json(req);
 		// var sql = "INSERT INTO posts (post_title, post_desc, post_lat, post_lng, user_id) VALUES (?, ?, ?, ?, ?)";
 		// var inserts = [req.body.postTitle, req.body.postDesc, req.body.postLat, req.body.postLng, req.body.userId];
 		// sql = mysql.format(sql, inserts);
