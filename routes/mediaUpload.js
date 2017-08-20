@@ -2,11 +2,22 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var multer = require('multer');
+var pool = require('./dbconnection');
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/app/public/images/postImages/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now()+'jpg')
+  }
+})
+ 
+var upload = multer({ storage: storage })
 
 var storagePath = '/app/public/images/postImages/';
-var upload = multer({dest: storagePath})
+// var upload = multer({dest: storagePath})
 
-var pool = require('./dbconnection');
 
 router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
