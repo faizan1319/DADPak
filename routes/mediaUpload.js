@@ -13,7 +13,7 @@ router.post('/postImages', function(req, res) {
 
 		console.log(req.file);
 		console.log(req.body);
-		res.json(req);
+		res.json('kiya khayal ha');
 		// var sql = "INSERT INTO posts (post_title, post_desc, post_lat, post_lng, user_id) VALUES (?, ?, ?, ?, ?)";
 		// var inserts = [req.body.postTitle, req.body.postDesc, req.body.postLat, req.body.postLng, req.body.userId];
 		// sql = mysql.format(sql, inserts);
