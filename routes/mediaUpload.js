@@ -4,15 +4,14 @@ var mysql = require('mysql');
 var multer = require('multer');
 
 var storagePath = __dirname+'/public/images/postImages/';
-var uploads = multer({dest: storagePath})
+var upload = multer({dest: storagePath})
 
 var pool = require('./dbconnection');
 
-router.post('/postImages', uploads.single(), function(req, res) {
+router.post('/postImages', upload.single('recfile'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 
 		console.log('storagepath: ', storagepath);
-		console.log('han bhai req.files: ',req.files);
 		console.log('han bhai req.file: ',req.file);
 		console.log('han bhai req.body: ',req.body);
 		res.json('kiya khayal hai');
