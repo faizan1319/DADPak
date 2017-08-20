@@ -8,7 +8,7 @@ var uploads = multer({dest: storagePath})
 
 var pool = require('./dbconnection');
 
-router.post('/postImages', uploads.single('abc'), function(req, res) {
+router.post('/postImages', function(req, res) {
 	pool.getConnection(function(err, connection) {
 
 		console.log('han bhai req.files: ',req.files);
