@@ -3,7 +3,8 @@ var router = express.Router();
 var mysql = require('mysql');
 var multer = require('multer');
 
-var uploads = multer({dest:'uploads/postImages/'})
+var storagePath = __dirname+'/public/images/postImages/';
+var uploads = multer({dest: storagePath})
 
 var pool = require('./dbconnection');
 
