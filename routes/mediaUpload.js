@@ -11,9 +11,9 @@ var pool = require('./dbconnection');
 router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 
-		console.log('storagepath: ', storagepath);
-		console.log('han bhai req.file: ',req.file);
-		console.log('han bhai req.body: ',req.body);
+		console.log(req);
+		// console.log('han bhai req.file: ',req.file);
+		// console.log('han bhai req.body: ',req.body);
 		res.json('kiya khayal hai');
 		// var sql = "INSERT INTO posts (post_title, post_desc, post_lat, post_lng, user_id) VALUES (?, ?, ?, ?, ?)";
 		// var inserts = [req.body.postTitle, req.body.postDesc, req.body.postLat, req.body.postLng, req.body.userId];
