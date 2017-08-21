@@ -10,7 +10,7 @@ var storage = multer.diskStorage({
 		cb(null, '/app/public/videos/postVideos/')
 	},
 	filename: function(req, file, cb) {
-		cd(null, file.fieldname + '_' + Date.now() + '.mp4')
+		cb(null, file.fieldname + '_' + Date.now() + '.mp4')
 	}
 })
 
