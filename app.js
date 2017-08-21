@@ -1,16 +1,17 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var cors = require('cors');
+var express       = require('express');
+var path          = require('path');
+var favicon       = require('serve-favicon');
+var logger        = require('morgan');
+var cookieParser  = require('cookie-parser');
+var bodyParser    = require('body-parser');
+var cors          = require('cors');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var posts = require('./routes/post');
-var comments = require('./routes/comments');
-var mediaUpload = require ('./routes/mediaUpload');
+var index         = require('./routes/index');
+var users         = require('./routes/users');
+var posts         = require('./routes/post');
+var comments      = require('./routes/comments');
+var mediaUpload   = require ('./routes/mediaUpload');
+var videoUpload   = require('./routes/videoUpload');
 
 
 var app = express();
@@ -38,6 +39,7 @@ app.use('/users', users);
 app.use('/posts', posts);
 app.use('/comments', comments);
 app.use('/images', mediaUpload);
+app.use('/videos', videoUpload);
 
 
 // catch 404 and forward to error handler
