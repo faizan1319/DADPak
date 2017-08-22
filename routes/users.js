@@ -9,15 +9,31 @@ router.get('/', function(req, res, next) {
 });
 
 //login attempt
-router.get('/login/:user/', function(req, res) {
+router.post('/login', function(req, res) {
+	
+	var username = req.body.username;
+	var password = req.body.password;
+	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, postCount FROM user WHERE username = ?";
+	var inserts = [username];
+	sql = mysql.format(sql, inserts);
+
 	pool.getConnection(function(err, connection) {
-  		var sql = "SELECT user_id, password FROM user WHERE username =";
-  		
-  		sql += "'"+req.params.user+"'";
 		connection.query(sql, function (error, results) {
-			res.json(results);
 			connection.release();
+			
 			if (error) throw error;
+			
+			if(results.length > 0 ) {
+				if( password == results[0].password) res.json(results);
+				else {
+					var response = {
+						length: 2,
+					}
+					res.json(response);
+				}
+			}
+			else res.json(results);
+			
 		});
 	});
 });
@@ -25,7 +41,7 @@ router.get('/login/:user/', function(req, res) {
 router.get('/checkDuplicateUsername/:username', function(req, res) {
 	pool.getConnection(function(err, connection) {
 		var username = req.params.username;
-		var sql = 'SELECT user_id FROM user WHERE username = ?';
+		var sql = 'SELECT userId FROM user WHERE username = ?';
 		var inserts = [username];
 		sql = mysql.format(sql, inserts);
 
@@ -43,7 +59,7 @@ router.get('/checkDuplicateUsername/:username', function(req, res) {
 router.get('/checkForEmailAlreadyExist/:email', function(req, res) {
 	pool.getConnection(function(err, connection) {
 		var email = req.params.email;
-		var sql = 'SELECT user_id FROM user WHERE email = ?';
+		var sql = 'SELECT userId FROM user WHERE email = ?';
 		var inserts = [email];
 		sql = mysql.format(sql, inserts);
 
@@ -66,7 +82,7 @@ router.post('/signup',function(req, res){
 		var email = req.body.email;
 		var password = req.body.password;
 
-		var sql='INSERT INTO user (firstname, lastname, username, email, password, joined_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP())'; 
+		var sql='INSERT INTO user (firstname, lastname, username, email, password, joinedAt) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP())'; 
 		var inserts = [firstname, lastname, username, email, password];
 		sql = mysql.format(sql, inserts);
 

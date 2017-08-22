@@ -11,7 +11,7 @@ var pool = require('./dbconnection');
 
 
 router.get('/:postId', function(req, res) {
-	var sql = "SELECT c.comment_id, c.comment_text, c.user_id, u.username, u.dp_url, DATEDIFF(CURRENT_DATE(), posted_date) AS date_diff, TIMEDIFF(CURRENT_TIME(), posted_time) AS time_diff FROM comments c INNER JOIN user u ON c.user_id = u.user_id WHERE c.post_id =" +req.params.postId;
+	var sql = "SELECT c.commentId, c.commentText, c.userId, u.username, u.dpUrl, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM comments c INNER JOIN user u ON c.userId = u.userId WHERE c.postId =" +req.params.postId;
 	
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
@@ -29,8 +29,8 @@ router.post('/incomming', function(req, res) {
 	var postId = req.body.postId;
 	var userId = req.body.userId;
 
-	var sql1 = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = " + postId ;
-	var sql2 = "INSERT INTO comments (comment_text, post_id, user_id, posted_date, posted_time) VALUES ('"+ commentText +"', "+ postId + ", "+ userId + ", "+ "CURDATE(), CURTIME())";
+	var sql1 = "UPDATE posts SET postCommentCount = postCommentCount + 1 WHERE post_id = " + postId ;
+	var sql2 = "INSERT INTO comments (commentText, postId, userId, postedDate, postedTime) VALUES ('"+ commentText +"', "+ postId + ", "+ userId + ", "+ "CURDATE(), CURTIME())";
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql1, function(error, results) {
@@ -50,7 +50,7 @@ router.post('/incomming', function(req, res) {
 
 router.get('/counts/:postId', function(req, res) {
 	
-	var sql = "SELECT post_comment_count, post_likes, post_dislikes FROM posts WHERE post_id = " + req.params.postId;
+	var sql = "SELECT postCommentCount, postLikes, postDislikes FROM posts WHERE postId = " + req.params.postId;
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
