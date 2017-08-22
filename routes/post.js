@@ -24,7 +24,8 @@ router.get('/getPostByUserId/:userId', function(req, res) {
 	var userId = req.params.userId;
 	var sql = "SELECT postId, postMediaType, postMediaFilePath, postTitle, postDesc, postLat, postLng, postLikes, postDislikes, postCommentCount, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts WHERE userId = ?";
 	var inserts = [userId];
-	pool.getConnectiontion(function(err, connection) {
+	sql = mysql.format(sql, inserts);
+	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
 			connection.release();
 			if(error) throw error;
