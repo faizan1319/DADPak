@@ -24,14 +24,23 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 
 		var body = req.body;
 		var file = req.file;
-		console.log(file);
-		// console.log('han bhai req.file: ',req.file);
-		// console.log('han bhai req.body: ',req.body);
-		res.json([body, file]);
-		// var sql = "INSERT INTO posts (post_title, post_desc, post_lat, post_lng, user_id) VALUES (?, ?, ?, ?, ?)";
-		// var inserts = [req.body.postTitle, req.body.postDesc, req.body.postLat, req.body.postLng, req.body.userId];
-		// sql = mysql.format(sql, inserts);
-		// console.log(sql);
+
+		var userId 				= req.body.userId;
+		var postTitle 			= req.body.postTitle;
+		var postDesc 			= req.body.postDesc;
+		var postLat 			= req.body.postLat;
+		var postLng 			= req.body.postLng;
+		var postMediaType 		= req.body.postMediaType;
+		var postMediaFileName 	= req.file.filename;
+		var postMediaFilePath 	= req.file.destination;
+		var postMediaFileURL 	= req.file.path;
+
+		var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
+
+		var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		sql = mysql.format(sql, inserts);
+		console.log(sql);
+		res.json(sql);
 		// connection.query(sql, function(error, results) {
 		// 	res.json(results);
 		// 	connection.release();
