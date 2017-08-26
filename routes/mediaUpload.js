@@ -30,6 +30,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postMediaFileName 	= req.file.filename;
 	var postMediaFilePath 	= req.file.destination;
 	var postMediaFileURL 	= req.file.path;
+	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
 
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -38,8 +39,8 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
-			res.json(results);
 			connection.release();
+			res.json(results);
 			if(error) throw error;
 		});
 	});

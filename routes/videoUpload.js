@@ -27,20 +27,26 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 	var postMediaFileName 	= req.file.filename;
 	var postMediaFilePath 	= req.file.destination;
 	var postMediaFileURL 	= req.file.path;
+	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
 
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
-	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	sql = mysql.format(sql, inserts);
 	console.log(sql);
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
-			results.message('Successfull!!');
-			res.json(results);
 			connection.release();
+			res.json(results);
 			if(error) throw error;
 		})
 	})
+})
+
+router.get('/testing', function(req, res) {
+	var postMediaFileURL 	= '/app/public/images/postImages/image-1503730440440.jpg';
+	postMediaFileURL = postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
+	res.json(postMediaFileURL);
 })
 
 module.exports = router;
