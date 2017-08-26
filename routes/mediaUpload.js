@@ -36,16 +36,13 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	sql = mysql.format(sql, inserts);
 	console.log(sql);
 
-	res.json(sql);
-
-	// pool.getConnection(function(err, connection) {
-	// 	connection.query(sql, function(error, results) {
-	// 		results.message('Successfull!!');
-	// 		res.json(results);
-	// 		connection.release();
-	// 		if(error) throw error;
-	// 	});
-	// });
+	pool.getConnection(function(err, connection) {
+		connection.query(sql, function(error, results) {
+			res.json(results);
+			connection.release();
+			if(error) throw error;
+		});
+	});
 });
 
 
