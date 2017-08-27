@@ -27,7 +27,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postMediaFileName 	= req.file.filename;
 	var postMediaFilePath 	= req.file.destination;
 	var postMediaFileURL 	= req.file.path;
-	var postCategories 			= JSON.parse(req.body.postCategories);
+	var postCategories 		= JSON.parse(req.body.postCategories);
 	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
 
 
@@ -47,9 +47,8 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 				connection.query(sql2, function(error2, results2) {
 					if(error2) throw error2;
 				})
-				connection.release();
 			}
-
+			connection.release();
 			res.send(results);
 			if(error) throw error;
 		});
