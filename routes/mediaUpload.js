@@ -22,7 +22,7 @@ var upload = multer({ storage: storage })
 router.post('/postImages', upload.single('image'), function(req, res) {
 	
 	// for(x in postCat) {
-	// 	var sql = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+	// 	var sql = ""
 	// 	var inserts = []
 	// }
 	// res.send(req.body.postCategories);
@@ -38,7 +38,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postMediaFileName 	= req.file.filename;
 	var postMediaFilePath 	= req.file.destination;
 	var postMediaFileURL 	= req.file.path;
-	var postCat 			= JSON.parse(req.body.postCategories);
+	var postCategories 			= JSON.parse(req.body.postCategories);
 	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
 
 
@@ -49,9 +49,19 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
 			connection.release();
+
 			var postId = results.insertId;
-			console.log(results);
-			console.log(postId);
+			var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+			var inserts2;
+			for(x in postCategories) {
+				inserts2 = [x, postId, userId];
+				sql2 = mysql.format(sql2, inserts2);
+				connection.query(sql2, function(error2, results2) {
+					connection.release();
+					if(error2) throw error2;
+				})
+			}
+			
 			res.send(results);
 			if(error) throw error;
 		});
