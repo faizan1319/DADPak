@@ -36,6 +36,20 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
+			var postId 	= results.insertId;
+			var sql2;
+			var inserts2;
+			var x ;
+			for(x in postCategories) {
+				sql2 	 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+				inserts2 = [postCategories[x], postId, userId];
+				console.log(inserts2);
+				sql2 = mysql.format(sql2, inserts2);
+				console.log(sql2);
+				connection.query(sql2, function(error2, results2) {
+					if(error2) throw error2;
+				})
+			}
 			connection.release();
 			res.json(results);
 			if(error) throw error;

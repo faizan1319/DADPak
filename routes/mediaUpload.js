@@ -35,16 +35,6 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	sql = mysql.format(sql, inserts);
 	var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
 
-	// for(x in postCategories) {
-	// 	console.log(postCategories[x]);
-	// 	// inserts2 = [postCategories[x], postId, userId];
-	// 	// sql2 = mysql.format(sql2, inserts2);
-	// 	// console.log(sql2);
-	// 	// connection.query(sql2, function(error2, results2) {
-	// 	// 	if(error2) throw error2;
-	// 	// })
-	// }
-	// res.json('kiya hal hain');
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
 			var postId 	= results.insertId;
