@@ -46,6 +46,13 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	});
 });
 
+router.post('/postCategories', function(req, res) {
+	console.log('this is category 1: ', req.body.postCategories[0]);
+	console.log('this is category 2: ', req.body.postCategories[1]);
+	console.log('these are the categories: ', req.body.postCategories);
+	res.json(req.body.postCategories);
+})
+
 
 
 module.exports = router;
