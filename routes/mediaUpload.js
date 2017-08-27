@@ -50,7 +50,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 		connection.query(sql, function(error, results) {
 			connection.release();
 			var postId = results.insertedId;
-			console.log(postId);
+			console.log(results);
 			res.send(results);
 			if(error) throw error;
 		});
