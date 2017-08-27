@@ -15,18 +15,7 @@ var storage = multer.diskStorage({
  
 var upload = multer({ storage: storage })
 
-// var storagePath = '/app/public/images/postImages/';
-// // var upload = multer({dest: storagePath})
-
-
 router.post('/postImages', upload.single('image'), function(req, res) {
-	
-	// for(x in postCat) {
-	// 	var sql = ""
-	// 	var inserts = []
-	// }
-	// res.send(req.body.postCategories);
-
 	
 	var x ;
 	var userId 				= req.body.userId;
@@ -48,7 +37,6 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
-			connection.release();
 
 			var postId = results.insertId;
 			var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
@@ -57,19 +45,16 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 				inserts2 = [x, postId, userId];
 				sql2 = mysql.format(sql2, inserts2);
 				connection.query(sql2, function(error2, results2) {
-					connection.release();
 					if(error2) throw error2;
 				})
+				connection.release();
 			}
-			
+
 			res.send(results);
 			if(error) throw error;
 		});
 	});
 });
 
-// router.get('/testing', function(req, res) {
-// 	var abc = 
-// })
 
 module.exports = router;
