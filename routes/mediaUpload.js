@@ -21,8 +21,7 @@ var upload = multer({ storage: storage })
 
 router.post('/postImages', upload.single('image'), function(req, res) {
 	
-	var postCat = JSON.stringify(req.body.postCategories);
-	postCat = JSON.parse(postCat);
+	var postCat = JSON.parse(req.body.postCategories);
 	console.log('type of body wala category', typeof req.body.postCategories);
 	console.log('type of parse category', typeof postCat);
 	console.log('post categories: ',postCat);
