@@ -27,6 +27,7 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 	var postMediaFileName 	= req.file.filename;
 	var postMediaFilePath 	= req.file.destination;
 	var postMediaFileURL 	= req.file.path;
+	var postCategories 		= JSON.parse(req.body.postCategories);
 	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('videos/'), postMediaFileURL.length);
 
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
