@@ -18,6 +18,7 @@ var upload = multer({ storage: storage })
 router.post('/postImages', upload.single('image'), function(req, res) {
 	
 	var x ;
+	var postId = 2;
 	var userId 				= req.body.userId;
 	var postTitle 			= req.body.postTitle;
 	var postDesc 			= req.body.postDesc;
