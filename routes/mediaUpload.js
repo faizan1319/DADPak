@@ -35,10 +35,11 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	sql = mysql.format(sql, inserts);
+	var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
 
 	for(x in postCategories) {
 		console.log(x);
-		inserts2 = [x, postId, userId];
+		inserts2 = [postCategories[x], postId, userId];
 		sql2 = mysql.format(sql2, inserts2);
 		console.log(sql2);
 		// connection.query(sql2, function(error2, results2) {
