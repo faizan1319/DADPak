@@ -35,7 +35,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	sql = mysql.format(sql, inserts);
-	console.log(sql);
+	console.log(req.body.postCategories);
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
