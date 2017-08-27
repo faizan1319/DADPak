@@ -21,6 +21,11 @@ var upload = multer({ storage: storage })
 
 router.post('/postImages', upload.single('image'), function(req, res) {
 	
+	console.log('post categories: 'req.body.postCategories);
+	console.log('post category 1: 'req.body.postCategories[0]);
+	console.log('post category 2: 'req.body.postCategories[1]);
+
+	
 	var userId 				= req.body.userId;
 	var postTitle 			= req.body.postTitle;
 	var postDesc 			= req.body.postDesc;
@@ -35,7 +40,6 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	sql = mysql.format(sql, inserts);
-	console.log(req.body.postCategories);
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
@@ -45,14 +49,5 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 		});
 	});
 });
-
-router.post('/postCategories', function(req, res) {
-	console.log('this is category 1: ', req.body.postCategories[0]);
-	console.log('this is category 2: ', req.body.postCategories[1]);
-	console.log('these are the categories: ', req.body.postCategories);
-	res.json(req.body.postCategories);
-})
-
-
 
 module.exports = router;
