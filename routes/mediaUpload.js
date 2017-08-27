@@ -15,8 +15,8 @@ var storage = multer.diskStorage({
  
 var upload = multer({ storage: storage })
 
-var storagePath = '/app/public/images/postImages/';
-// var upload = multer({dest: storagePath})
+// var storagePath = '/app/public/images/postImages/';
+// // var upload = multer({dest: storagePath})
 
 
 router.post('/postImages', upload.single('image'), function(req, res) {
