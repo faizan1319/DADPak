@@ -48,10 +48,11 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
 			var postId 	= results.insertId;
-			var sql2 	= "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+			var sql2;
 			var inserts2;
 			var x ;
 			for(x in postCategories) {
+				sql2 	 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
 				inserts2 = [postCategories[x], postId, userId];
 				console.log(inserts2);
 				sql2 = mysql.format(sql2, inserts2);
