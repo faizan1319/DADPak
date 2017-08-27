@@ -24,7 +24,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postCat = JSON.parse(req.body.postCategories);
 	console.log('type of body wala category', typeof req.body.postCategories);
 	console.log('type of parse category', typeof postCat);
-	console.log('post categories: ',postCat);
+	console.log('post categories: ',postCat.length);
 	console.log('post category 1: ',postCat[0]);
 	console.log('post category 2: ',postCat[1]);
 	res.send(req.body.postCategories);
