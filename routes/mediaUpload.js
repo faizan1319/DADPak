@@ -46,10 +46,14 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
 			connection.release();
-			res.json(results);
+			res.send(postCat);
 			if(error) throw error;
 		});
 	});
 });
+
+// router.get('/testing', function(req, res) {
+// 	var abc = 
+// })
 
 module.exports = router;
