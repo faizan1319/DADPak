@@ -21,9 +21,11 @@ var upload = multer({ storage: storage })
 
 router.post('/postImages', upload.single('image'), function(req, res) {
 	
-	console.log('post categories: ',req.body.postCategories);
-	console.log('post category 1: ',req.body.postCategories[0]);
-	console.log('post category 2: ',req.body.postCategories[1]);
+	var postCat = JSON.stringify(req.body.postCategories);
+	postCat = JSON.parse(postCat);
+	console.log('post categories: ',postCat);
+	console.log('post category 1: ',postCat[0]);
+	console.log('post category 2: ',postCat[1]);
 
 	
 	var userId 				= req.body.userId;
