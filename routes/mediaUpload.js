@@ -49,7 +49,8 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
 			connection.release();
-			console.log(results);
+			var postId = results.insertedId;
+			console.log(postId);
 			res.send(results);
 			if(error) throw error;
 		});
