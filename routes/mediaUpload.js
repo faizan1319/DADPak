@@ -35,24 +35,34 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	sql = mysql.format(sql, inserts);
 
-	pool.getConnection(function(err, connection) {
-		connection.query(sql, function(error, results) {
+	for(x in postCategories) {
+		console.log(x);
+		inserts2 = [x, postId, userId];
+		sql2 = mysql.format(sql2, inserts2);
+		console.log(sql2);
+		// connection.query(sql2, function(error2, results2) {
+		// 	if(error2) throw error2;
+		// })
+	}
+	res.json('kiya hal hain');
+	// pool.getConnection(function(err, connection) {
+	// 	connection.query(sql, function(error, results) {
 
-			var postId = results.insertId;
-			var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
-			var inserts2;
-			for(x in postCategories) {
-				inserts2 = [x, postId, userId];
-				sql2 = mysql.format(sql2, inserts2);
-				connection.query(sql2, function(error2, results2) {
-					if(error2) throw error2;
-				})
-			}
-			connection.release();
-			res.send(results);
-			if(error) throw error;
-		});
-	});
+	// 		var postId = results.insertId;
+	// 		var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+	// 		var inserts2;
+	// 		for(x in postCategories) {
+	// 			inserts2 = [x, postId, userId];
+	// 			sql2 = mysql.format(sql2, inserts2);
+	// 			connection.query(sql2, function(error2, results2) {
+	// 				if(error2) throw error2;
+	// 			})
+	// 		}
+	// 		connection.release();
+	// 		res.send(results);
+	// 		if(error) throw error;
+	// 	});
+	// });
 });
 
 
