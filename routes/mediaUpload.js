@@ -53,7 +53,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 			var x ;
 			for(x in postCategories) {
 				inserts2 = [postCategories[x], postId, userId];
-				console.log(insert2);
+				console.log(inserts2);
 				sql2 = mysql.format(sql2, inserts2);
 				connection.query(sql2, function(error2, results2) {
 					if(error2) throw error2;
