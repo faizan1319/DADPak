@@ -22,7 +22,7 @@ router.get('/trending', function(req, res) {
 
 router.get('/getPostByUserId/:userId', function(req, res) {
 	var userId = req.params.userId;
-	var sql = "SELECT postId, postMediaType, postMediaFileURL, postTitle, postDesc, postLat, postLng, postLikes, postDislikes, postCommentCount, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts WHERE userId = ?";
+	var sql = "SELECT postId, postMediaType, postMediaFileURL, postTitle, postDesc, postLat, postLng, postLikes, postDislikes, postCommentCount, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts WHERE userId = ? ORDER BY postedDate, postedTime";
 	var inserts = [userId];
 	sql = mysql.format(sql, inserts);
 	pool.getConnection(function(err, connection) {
@@ -31,12 +31,11 @@ router.get('/getPostByUserId/:userId', function(req, res) {
 			var inserts2;
 			var loopCount = results.length;
 			for(let x = 0 ; x < loopCount ; x++) {
-				sql2 = "SELECT pca.catId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.catId WHERE pca.postId = ? ORDER BY postedDate, postedTime"
+				sql2 = "SELECT pca.catId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.catId WHERE pca.postId = ?"
 				inserts2 = [results[x].postId];
 				sql2 = mysql.format(sql2, inserts2);
 				connection.query(sql2, function(error2, results2) {
 					if(results2.length != 0 ) {
-						console.log('han bhai kia masla hai: ',results[x], 'yelo x: ',x);
 						console.log('data: ',results2);
 						results[x]['postCategories'] = results2;
 						console.log('yelo: ',results[x]);
