@@ -27,9 +27,41 @@ router.get('/getPostByUserId/:userId', function(req, res) {
 	sql = mysql.format(sql, inserts);
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
+			var sql2;
+			var inserts2;
+			var loopCount = results.length;
+			for(let x = 0 ; x < loopCount ; x++) {
+				sql2 = "SELECT pca.catId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.catId WHERE pca.postId = ? ORDER BY postedDate, postedTime"
+				inserts2 = [results[x].postId];
+				sql2 = mysql.format(sql2, inserts2);
+				connection.query(sql2, function(error2, results2) {
+					if(results2.length != 0 ) {
+						console.log('han bhai kia masla hai: ',results[x], 'yelo x: ',x);
+						console.log('data: ',results2);
+						results[x]['postCategories'] = results2;
+						console.log('yelo: ',results[x]);
+					}
+					if(x == (loopCount -1)) {
+						res.json(results);
+					}
+				})
+			}
+			// for(x in results) {
+			// 	sql2 = "SELECT pca.catId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.catId WHERE pca.postId = ?"
+			// 	inserts2 = [results[x].postId];
+			// 	sql2 = mysql.format(sql2, inserts2);
+			// 	// console.log('x: ',x,'query: ',sql2);
+			// 	connection.query(sql2, function(error2, results2) {
+			// 		if(results2.length != 0 ) {
+			// 			console.log('data: ',results2);
+			// 			results[x]['postCategories'] = results2;
+			// 			// console.log('yelo: ',results[x]);
+			// 		}
+			// 	})
+			// }
 			connection.release();
 			if(error) throw error;
-			res.json(results);
+			// res.json(results);
 		})
 	})
 })
