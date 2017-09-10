@@ -31,7 +31,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 
 
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
-	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE())";
+	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate, postCommentCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE(), 0)";
 	sql = mysql.format(sql, inserts);
 	var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
 

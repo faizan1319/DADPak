@@ -31,6 +31,7 @@ router.post('/incomming', function(req, res) {
 
 	var sql1 = "UPDATE posts SET postCommentCount = postCommentCount + 1 WHERE postId = " + postId ;
 	var sql2 = "INSERT INTO comments (commentText, postId, userId, postedDate, postedTime) VALUES ('"+ commentText +"', "+ postId + ", "+ userId + ", "+ "CURDATE(), CURTIME())";
+	console.log(sql1);
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql1, function(error, results) {

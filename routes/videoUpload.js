@@ -31,7 +31,7 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('videos/'), postMediaFileURL.length);
 
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
-	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE())";
+	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate, postCommentCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE(), 0)";
 	sql = mysql.format(sql, inserts);
 	console.log(sql);
 
