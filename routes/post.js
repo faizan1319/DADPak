@@ -22,7 +22,7 @@ router.get('/trending', function(req, res) {
 
 router.get('/getPostByUserId/:userId', function(req, res) {
 	var userId = req.params.userId;
-	var sql = "SELECT postId, postMediaType, postMediaFileURL, postTitle, postDesc, postLat, postLng, postLikes, postDislikes, postCommentCount, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts WHERE userId = ? ORDER BY dateDiff, timeDiff DESC";
+	var sql = "SELECT postId, postMediaType, postMediaFileURL, postTitle, postDesc, postLat, postLng, postLikes, postDislikes, postCommentCount, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts WHERE userId = ? ORDER BY dateDiff, timeDiff";
 	var inserts = [userId];
 	sql = mysql.format(sql, inserts);
 	pool.getConnection(function(err, connection) {
