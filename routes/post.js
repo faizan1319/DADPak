@@ -65,36 +65,36 @@ router.get('/getPostByUserId/:userId', function(req, res) {
 	})
 })
 
-router.get('/getUserSubscribtionPosts/:userId', function(req, res) {
-	var userId = req.params.userId;
-	var sql = "SELECT pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS DATEDIFF, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS TIMEDIFF, us.categoryId FROM posts p INNER JOIN postCategoryAssociation pca ON p.postId = pca.postId INNER JOIN userSubscribtion us ON us.categoryId = pca.categoryId WHERE us.userId = ? GROUP BY pca.postId";
-	var inserts = [userId];
-	sql = mysql.format(sql, inserts);
-	pool.getConnection(function(error, connection) {
-		connection.query(sql, function(err, results) {
-			var sql2;
-			var inserts2;
-			var loopCount = results.length;
-			for(let x = 0 ; x < loopCount ; x++) {
-				sql2 = "SELECT pca.catId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.catId WHERE pca.postId = ?"
-				inserts2 = [results[x].postId];
-				sql2 = mysql.format(sql2, inserts2);
-				connection.query(sql2, function(error2, results2) {
-					if(results2.length != 0 ) {
-						console.log('data: ',results2);
-						results[x]['postCategories'] = results2;
-						console.log('yelo: ',results[x]);
-					}
-					if(x == (loopCount -1)) {
-						res.json(results);
-					}
-				})
-			}
-			connection.release();
-			if(error) throw error;
-		})
-	})
-})
+// router.get('/getUserSubscribtionPosts/:userId', function(req, res) {
+// 	var userId = req.params.userId;
+// 	var sql = "SELECT pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS DATEDIFF, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS TIMEDIFF, us.categoryId FROM posts p INNER JOIN postCategoryAssociation pca ON p.postId = pca.postId INNER JOIN userSubscribtion us ON us.categoryId = pca.categoryId WHERE us.userId = ? GROUP BY pca.postId";
+// 	var inserts = [userId];
+// 	sql = mysql.format(sql, inserts);
+// 	pool.getConnection(function(error, connection) {
+// 		connection.query(sql, function(err, results) {
+// 			var sql2;
+// 			var inserts2;
+// 			var loopCount = results.length;
+// 			for(let x = 0 ; x < loopCount ; x++) {
+// 				sql2 = "SELECT pca.catId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.catId WHERE pca.postId = ?"
+// 				inserts2 = [results[x].postId];
+// 				sql2 = mysql.format(sql2, inserts2);
+// 				connection.query(sql2, function(error2, results2) {
+// 					if(results2.length != 0 ) {
+// 						console.log('data: ',results2);
+// 						results[x]['postCategories'] = results2;
+// 						console.log('yelo: ',results[x]);
+// 					}
+// 					if(x == (loopCount -1)) {
+// 						res.json(results);
+// 					}
+// 				})
+// 			}
+// 			connection.release();
+// 			if(error) throw error;
+// 		})
+// 	})
+// })
 
 
 module.exports = router;
