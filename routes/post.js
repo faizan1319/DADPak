@@ -107,5 +107,34 @@ router.get('/getUserSubscribtionPosts/:userId', function(req, res) {
 	})
 })
 
+router.get('/getPostForEmployee/:categoryId', function(req, res) {
+	var categoryId = req.params.categoryId;
+	var inserts = [categoryId];
+	var sql = 'SELECT pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS DATEDIFF, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS TIMEDIFF FROM posts p INNER JOIN  postCategoryAssociation pca ON p.postId = pca.postId WHERE pca.categoryId = ?';
+	sql = mysql.format(sql, inserts)
+	pool.getConnection(function(err, connection) {
+		connection.query(sql, function(error, results) {
+			var sql2;
+			var inserts2;
+			var loopCount = results.length;
+			for(let x = 0 ; x < loopCount ; x++) {
+				sql2 = "SELECT pca.categoryId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.categoryId WHERE pca.postId = ?"
+				inserts2 = [results[x].postId];
+				sql2 = mysql.format(sql2, inserts2);
+				connection.query(sql2, function(error2, results2) {
+					if(results2.length != 0 ) {
+						results[x]['postCategories'] = results2;
+					}
+					if(x == (loopCount -1)) {
+						res.json(results);
+					}
+				})
+			}
+			connection.release();
+			if(error) throw error;
+		})
+	})
+})
+
 
 module.exports = router;

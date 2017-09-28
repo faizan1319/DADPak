@@ -13,7 +13,7 @@ router.post('/login', function(req, res) {
 	
 	var username = req.body.username;
 	var password = req.body.password;
-	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, postCount FROM user WHERE username = ?";
+	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, userType, userPostCategory, postCount FROM user WHERE username = ?";
 	var inserts = [username];
 	sql = mysql.format(sql, inserts);
 
