@@ -33,7 +33,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 	var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate, postCommentCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE(), 0)";
 	sql = mysql.format(sql, inserts);
-	var sql2 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+	var sql2 = "INSERT INTO postCategoryAssociation (categoryId, postId, userId) VALUES (?, ?, ?)"
 
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {

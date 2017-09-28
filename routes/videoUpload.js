@@ -42,7 +42,7 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 			var inserts2;
 			var x ;
 			for(x in postCategories) {
-				sql2 	 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+				sql2 	 = "INSERT INTO postCategoryAssociation (categoryId, postId, userId) VALUES (?, ?, ?)"
 				inserts2 = [postCategories[x], postId, userId];
 				console.log(inserts2);
 				sql2 = mysql.format(sql2, inserts2);
