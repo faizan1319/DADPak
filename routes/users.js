@@ -16,24 +16,38 @@ router.post('/login', function(req, res) {
 	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, userType, employeePostCategoryId, postCount FROM user WHERE username = ?";
 	var inserts = [username];
 	sql = mysql.format(sql, inserts);
-
+	var sql2 = 'SELECT categoryId From userSubscription WHERE userId = ?';
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function (error, results) {
-			connection.release();
-			
 			if (error) throw error;
 			
+			//if there is a user
 			if(results.length > 0 ) {
-				if( password == results[0].password) res.json(results);
-				else {
+				//check password
+				if( password == results[0].password) {
+					var userId = results[0].userId;
+					var inserts2 = [userId];
+					sql2 = mysql.format(sql2, inserts2);
+					//get user subscriptions
+					connection.query(sql2, function(err2, subscriptions) {
+						connection.release();
+						if(err2) throw err2;
+						else {
+							//append subscriptions in user information and send
+							results[0].subscriptions = subscriptions;
+							res.json(results);
+						}
+					})
+				}
+				// if password unmatch, so according to front end logic i am send lenght 2
+				else { 
 					var response = {
 						length: 2,
 					}
 					res.json(response);
 				}
 			}
-			else res.json(results);
-			
+			else res.json(results); //no such user
 		});
 	});
 });
