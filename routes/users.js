@@ -16,7 +16,7 @@ router.post('/login', function(req, res) {
 	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, userType, employeePostCategoryId, postCount FROM user WHERE username = ?";
 	var inserts = [username];
 	sql = mysql.format(sql, inserts);
-	var sql2 = 'SELECT categoryId From userSubscription WHERE userId = ?';
+	var sql2 = 'SELECT us.categoryId, c.categoryName From userSubscription us INNER JOIN category c ON us.categoryId = c.categoryId WHERE userId = ?';
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function (error, results) {
 			if (error) throw error;
