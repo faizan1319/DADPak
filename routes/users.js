@@ -13,7 +13,7 @@ router.post('/login', function(req, res) {
 	
 	var username = req.body.username;
 	var password = req.body.password;
-	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, userType, userPostCategory, postCount FROM user WHERE username = ?";
+	var sql = "SELECT userId, password, userType, firstname, lastname, email, phone, dpUrl, userType, employeePostCategoryId, postCount FROM user WHERE username = ?";
 	var inserts = [username];
 	sql = mysql.format(sql, inserts);
 
@@ -91,6 +91,22 @@ router.post('/signup',function(req, res){
 			if(error) throw error;
 			else {
 				results.message = 'You have successfully joined the DAD community! Login and show whats happening around or see what others have to show.';
+				res.json(results);
+			}
+		})
+	})
+})
+
+router.get('/userSubscriptions/:userId', function(req, res) {
+	var userId = req.params.userId;
+	var sql = 'SELECT categoryId From userSubscription WHERE userId = ?';
+	var inserts = [userId];
+	sql = mysql.format(sql, inserts);
+	pool.getConnection(function(error, connection) {
+		connection.query(sql, function(err, results) {
+			connection.release();
+			if(err) throw err;
+			else {
 				res.json(results);
 			}
 		})
