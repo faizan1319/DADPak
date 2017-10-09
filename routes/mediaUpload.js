@@ -42,7 +42,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 			var inserts2;
 			var x ;
 			for(x in postCategories) {
-				sql2 	 = "INSERT INTO postCategoryAssociation (catId, postId, userId) VALUES (?, ?, ?)"
+				sql2 	 = "INSERT INTO postCategoryAssociation (categoryId, postId, userId) VALUES (?, ?, ?)"
 				inserts2 = [postCategories[x], postId, userId];
 				console.log(inserts2);
 				sql2 = mysql.format(sql2, inserts2);
@@ -52,7 +52,48 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 				})
 			}
 			connection.release();
+
+			var sendNotification = function(data) {
+				var headers = {
+					"Content-Type": "application/json; charset=utf-8",
+					"Authorization": "Basic YzEwYjMwZDItNjNiYy00M2EwLWJiZTctOGE5ZjBmMmRlOTk5"
+				};
+				
+				var options = {
+					host: "onesignal.com",
+					port: 443,
+					path: "/api/v1/notifications",
+					method: "POST",
+					headers: headers
+				};
+				
+				var https = require('https');
+				var req = https.request(options, function(res) {  
+					res.on('data', function(data) {
+					console.log("Response:");
+					console.log(JSON.parse(data));
+					});
+				});
+				
+				req.on('error', function(e) {
+					console.log("ERROR:");
+					console.log(e);
+				});
+				
+				req.write(JSON.stringify(data));
+				req.end();
+			};
+			  
+			var message = { 
+			app_id: "f2c01e69-0fcb-4967-9a65-3e2aa3bd1cce",
+			contents: {"en": "New post from your Subscriptions."},
+			included_segments: ["Active Users"]
+			};
+			  
+			sendNotification(message);
+
 			res.send(results);
+			
 			if(error) throw error;
 		});
 	});
