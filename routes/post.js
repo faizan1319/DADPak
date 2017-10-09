@@ -80,7 +80,7 @@ router.get('/getPostByUserId/:userId', function(req, res) {
 
 router.get('/getUserSubscriptionPosts/:userId', function(req, res) {
 	var userId = req.params.userId;
-	var sql = "SELECT u.username, u.dpUrl, pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS DATEDIFF, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS TIMEDIFF, us.categoryId FROM user u INNER JOIN posts p ON p.userId = u.userId INNER JOIN postCategoryAssociation pca ON p.postId = pca.postId INNER JOIN userSubscription us ON us.categoryId = pca.categoryId WHERE us.userId = ? GROUP BY pca.postId";
+	var sql = "SELECT u.username, u.dpUrl, pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS timeDiff, us.categoryId FROM user u INNER JOIN posts p ON p.userId = u.userId INNER JOIN postCategoryAssociation pca ON p.postId = pca.postId INNER JOIN userSubscription us ON us.categoryId = pca.categoryId WHERE us.userId = ? GROUP BY pca.postId ORDER BY dateDiff, timeDiff";
 	var inserts = [userId];
 	sql = mysql.format(sql, inserts);
 	pool.getConnection(function(error, connection) {
