@@ -165,6 +165,9 @@ router.get('/getAllPost', function(req, res) {
 router.get('/getPostForSearch/:searchString', function(req, res) {
 	pool.getConnection(function(err, connection) {
 		var sql = "SELECT u.username, u.dpUrl, p.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, p.userId, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts p INNER JOIN user u ON p.userId = u.userId WHERE MATCH (p.postTitle, p.postDesc) AGAINST (?)";
+		var inserts = [req.params.searchString];
+		sql = mysql.format(sql, inserts);
+		// console.log(sql);
 		connection.query(sql, function(error, results) {
 			var sql2;
 			var inserts2;
