@@ -136,5 +136,31 @@ router.get('/getPostForEmployee/:categoryId', function(req, res) {
 	})
 })
 
+router.get('/getAllPost', function(req, res) {
+	pool.getConnection(function(err, connection) {
+		var sql = "SELECT u.username, u.dpUrl, p.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, p.userId, DATEDIFF(CURRENT_DATE(), postedDate) AS dateDiff, TIMEDIFF(CURRENT_TIME(), postedTime) AS timeDiff FROM posts p INNER JOIN user u ON p.userId = u.userId";
+		connection.query(sql, function(error, results) {
+			var sql2;
+			var inserts2;
+			var loopCount = results.length;
+			for(let x = 0 ; x < loopCount ; x++) {
+				sql2 = "SELECT pca.categoryId, c.categoryName FROM category c INNER JOIN postCategoryAssociation pca ON c.categoryId = pca.categoryId WHERE pca.postId = ?"
+				inserts2 = [results[x].postId];
+				sql2 = mysql.format(sql2, inserts2);
+				connection.query(sql2, function(error2, results2) {
+					if(results2.length != 0 ) {
+						results[x]['postCategories'] = results2;
+					}
+					if(x == (loopCount -1)) {
+						res.json(results);
+					}
+				})
+			}
+			connection.release();
+			if(error) throw error;
+		});
+	});
+});
+
 
 module.exports = router;
