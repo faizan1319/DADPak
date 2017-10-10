@@ -127,6 +127,21 @@ router.get('/userSubscriptions/:userId', function(req, res) {
 	})
 })
 
+router.post('/changePassword', function(req, res) {
+	var newPassword = req.body.password;
+	var userId = req.body.userId;
+	var sql = 'UPDATE user SET password = ? WHERE userId = ?';
+	inserts = [newPassword, userId];
+	sql = mysql.format(sql, inserts);
+	pool.getConnection(function(error, connection) {
+		connection.query(sql, function(err, results) {
+			connection.release();
+			console.log(results);
+			res.json(results);
+		})
+	})
+})
+
 
 
 module.exports = router;
