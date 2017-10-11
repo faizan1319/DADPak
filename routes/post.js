@@ -110,7 +110,7 @@ router.get('/getUserSubscriptionPosts/:userId', function(req, res) {
 router.get('/getPostForEmployee/:categoryId', function(req, res) {
 	var categoryId = req.params.categoryId;
 	var inserts = [categoryId];
-	var sql = 'SELECT pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS DATEDIFF, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS TIMEDIFF FROM posts p INNER JOIN  postCategoryAssociation pca ON p.postId = pca.postId WHERE pca.categoryId = ?';
+	var sql = 'SELECT pca.postId, p.postMediaType, p.postMediaFileURL, p.postTitle, p.postDesc, p.postLat, p.postLng, p.postLikes, p.postDislikes, p.postCommentCount, DATEDIFF(CURRENT_DATE(), p.postedDate) AS DATEDIFF, TIMEDIFF(CURRENT_TIME(), p.postedTime) AS TIMEDIFF FROM posts p INNER JOIN  postCategoryAssociation pca ON p.postId = pca.postId WHERE pca.categoryId = ? ORDER BY DATEDIFF, TIMEDIFF';
 	sql = mysql.format(sql, inserts)
 	pool.getConnection(function(err, connection) {
 		connection.query(sql, function(error, results) {
