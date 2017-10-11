@@ -96,7 +96,7 @@ router.post('/signup',function(req, res){
 		var email = req.body.email;
 		var password = req.body.password;
 
-		var sql='INSERT INTO user (firstname, lastname, username, email, password, joinedAt) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP())'; 
+		var sql='INSERT INTO user (firstname, lastname, username, email, password, userType, joinedAt) VALUES (?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP())'; 
 		var inserts = [firstname, lastname, username, email, password];
 		sql = mysql.format(sql, inserts);
 
