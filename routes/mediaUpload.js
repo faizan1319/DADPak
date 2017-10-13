@@ -3,6 +3,13 @@ var router = express.Router();
 var mysql = require('mysql');
 var multer = require('multer');
 var pool = require('./dbconnection');
+var cloudinary = require('cloudinary');
+
+cloudinary.config({ 
+	cloud_name: 'sample', 
+	api_key: '874837483274837', 
+	api_secret: 'a676b67565c6767a6767d6767f676fe1' 
+  });
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -28,6 +35,10 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postMediaFileURL 	= req.file.path;
 	var postCategories 		= JSON.parse(req.body.postCategories);
 	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
+
+	cloudinary.uploader.upload(postMediaFileURL, function(result) { 
+		console.log('Result of cloudinary upload: ', result); 
+	});
 
 
 	var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
