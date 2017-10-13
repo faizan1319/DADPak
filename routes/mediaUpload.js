@@ -36,7 +36,7 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postCategories 		= JSON.parse(req.body.postCategories);
 	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
 
-	cloudinary.uploader.upload(postMediaFileURL, function(result) { 
+	cloudinary.uploader.upload(req.file.path, function(result) { 
 		console.log('Result of cloudinary upload: ', result); 
 	});
 
