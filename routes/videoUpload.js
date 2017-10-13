@@ -37,8 +37,9 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 	var postCategories 		= JSON.parse(req.body.postCategories);
 	// postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('videos/'), postMediaFileURL.length);
 
-	cloudinary.uploader.upload(postMediaFileURL, {resource_type: "video"},function(result) { 
+	cloudinary.uploader.upload(postMediaFileURL, {resource_type: "video"},function(error, result) { 
 		console.log(result);
+		console.log(error);
 		postMediaFileURL = result.url;
 		var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 		var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate, postCommentCount, postLikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE(), 0, 0)";
