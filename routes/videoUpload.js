@@ -37,7 +37,11 @@ router.post('/postVideos', upload.single('video'), function(req, res) {
 	var postCategories 		= JSON.parse(req.body.postCategories);
 	// postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('videos/'), postMediaFileURL.length);
 
-	cloudinary.uploader.upload(postMediaFileURL, {resource_type: "video"},function(error, result) { 
+	var options = {
+		resource_type: "video",
+		folder: "/postVideos/"
+	}
+	cloudinary.v2.uploader.upload(postMediaFileURL, options, function(error, result) { 
 		console.log(result);
 		console.log(error);
 		postMediaFileURL = result.url;
