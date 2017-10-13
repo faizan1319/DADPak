@@ -34,12 +34,11 @@ router.post('/postImages', upload.single('image'), function(req, res) {
 	var postMediaFilePath 	= req.file.destination;
 	var postMediaFileURL 	= req.file.path;
 	var postCategories 		= JSON.parse(req.body.postCategories);
-	postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
-
-	cloudinary.uploader.upload(req.file.path, function(result) { 
-		postMediaFileURL = result.url;
+	// postMediaFileURL 		= postMediaFileURL.substring(postMediaFileURL.indexOf('images/'), postMediaFileURL.length);
+	
+	cloudinary.uploader.upload(postMediaFileURL, function(result) { 
 		console.log('Result of cloudinary upload: ', result);
-		
+		postMediaFileURL = result.url;
 		var inserts = [postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId];
 		var sql = "INSERT INTO posts (postTitle, postDesc, postLat, postLng, postMediaType, postMediaFileName, postMediaFilePath, postMediaFileURL, userId, postedTime, postedDate, postCommentCount, postLikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURTIME(), CURDATE(), 0, 0)";
 		sql = mysql.format(sql, inserts);
