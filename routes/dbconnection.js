@@ -13,7 +13,7 @@ var pool  = mysql.createPool({
   connectionLimit : 10,
   host            : 'bmsyhziszmhf61g1.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
   user            : 'h5ocpja96rcsw4ty',
-  password        : 'imb4p0bzzf8ek5ho',
+  password        : 'cd7d2et236n64btx',
   database        : 'a701xr7ranlad92f'
 });
 
