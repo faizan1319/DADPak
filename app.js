@@ -8,6 +8,7 @@ var cors          = require('cors');
 
 var index         = require('./routes/index');
 var users         = require('./routes/users');
+var subscriptions = require('./routes/subscriptions');
 var posts         = require('./routes/post');
 var comments      = require('./routes/comments');
 var mediaUpload   = require ('./routes/mediaUpload');
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/subscriptions', subscriptions)
 app.use('/posts', posts);
 app.use('/comments', comments);
 app.use('/images', mediaUpload);
