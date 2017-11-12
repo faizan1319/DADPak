@@ -38,4 +38,34 @@ router.get('/:userId', function(req, res) {
 	})
 })
 
+router.put('/', function(req, res) {
+    var inserts;
+    var del = req.body.del;
+    var ins = req.body.ins;
+    var userId = req.body.userId;
+    var sqlForDel = 'DELETE FROM userSubscription WHERE userId = ? AND categoryId = ?';
+    var sqlForIns = 'INSERT INTO userSubscription (userId, categoryId) VALUES (?, ?)';
+    pool.getConnection(function(error, connection) {
+        if(error) res.json(error);
+        else {
+            for (let item of del) {
+                inserts = [userId, item];
+                sql = mysql.format(sqlForDel, inserts); 
+                connection.query(sql, function(err, results) {
+                    if(err) res.json(err);
+                })
+            }
+            for (let item of ins) {
+                inserts = [userId, item];
+                sql = mysql.format(sqlForIns, inserts); 
+                connection.query(sql, function(err, results) {
+                    if(err) res.json(err);
+                })
+            }
+            connection.release();
+            res.json({message: 'Subscriptions are updated!'});
+        }
+    })
+})
+
 module.exports = router;
