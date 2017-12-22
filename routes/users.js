@@ -35,15 +35,16 @@ router.post('/login', function(req, res) {
 						else {
 							//append subscriptions in user information and send
 							results[0].subscriptions = subscriptions;
+							results[0].checkFlag = 1;
 							res.json(results);
 						}
 					})
 				}
-				// if password unmatch, so according to front end logic i am send lenght 2
+				// if password unmatch, so according to front end logic i am sending a flag with value 2
 				else { 
-					var response = {
-						length: 2,
-					}
+					var response = [{
+						checkFlag: 2,
+					}]
 					res.json(response);
 				}
 			}
